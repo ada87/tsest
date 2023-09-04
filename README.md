@@ -1,19 +1,19 @@
 # TypeScript-Test
 
-`tsest` is a Bootstarp Tool of 'node:test', for `TypeScript` Project.
+tsest is a Bootstarp Tool of `node:test`, for `TypeScript` Project.
 
 No modify for test framework, Write testcase in official syntax, ref:
 
 1. Node Official Test : https://nodejs.org/api/test.html
 2. Node Official Assert : https://nodejs.org/api/assert.html
-3. This tool is Extremely simple less than 100 lines, you cloud not install and [copy code](nttest.ts) to script file for custom bootstrap.
-4. Provide optional assert tool for simpify assert code.
+
 
 ## Ussage
 
 1. Install
 
 ```bash
+# For ts usage, must install typescript ts-node in your project.
 npm install --save-dev typescript ts-node tsest
 ```
 
@@ -22,47 +22,72 @@ npm install --save-dev typescript ts-node tsest
 
 ```json
 {
-    "test": "node -r ts-node/register node_modules/ottest/index.ts",
-    "watch": "node -r ts-node/register node_modules/ottest/index.ts --watch",
+    "test": "node -r ts-node/register node_modules/tsest/run",
+    "watch":"node -r ts-node/register node_modules/tsest/run --watch", 
 }
 ```
 
-3. Done
+3. Write Test code with suffix : `.test.ts` , eg. `sum.test.ts`
 
-Run Comands 
+```typescript
+import { test } from 'node:test';
+import assert from 'node:assert';
+import { sum } from './mylib'; 
+
+test('test case',()=>{
+    assert.strictEqual(sum(1,2), 3);
+});
+```
+
+
+4. Done
+
+Run Command Interface
 
 ```bash
-# Test code
-npm run test import { RUN } from './nttest';
-
-const cmd = process.argv[process.argv.length - 1];
-const watch = cmd == '--watch' || cmd == '-w'
-RUN({ watch })
-# Test code  / watch mode
+# Test Code
+npm run test 
+# Test Code Watch Mode
 npm run watch
 ```
 
 
 ## Custom Ussage
 
-You can create Custom BootStrap entity File for custom ussage.
+Use `node_modules/tsest/run.js`, can start test without any code. But args is default:
+
+|param|type|default|
+|---|---|---|
+|root| string | `./src` if exists, nor: `./` |
+|suffix| string | '.test.ts' |
+|filter| (filePath: string) => boolean | ()=>true |
+
+
+you can change it by custom code:
+
 
 1. create script.ts 
 
 ```typescript
-import { RUN } from './otest/otest'
+import { start } from 'jstest/start';
+import { watch } from 'jstest/watch';
+
+// test '*.spec.test.ts' code in './lib', 'only test file ends with StringUtil.spec.test.ts'
+const options = { 
+    root: './lib',
+    suffix: '.spec.test.ts',
+    filter:(fileName:string)=>fileName.endsWith('StringUtil.spec.test.ts')
+}
 
 const cmd = process.argv[process.argv.length - 1];
-const watch = cmd == '--watch' || cmd == '-w'
-RUN({ 
-    watch ,
-    root: './lib',
-    filter:(fileName:string)=>fileName.endsWith('StringTest.test.ts')
-})
-
+if (cmd == '--watch' || cmd == '-w') {
+    watch(options)
+} else {
+    start(options)
+}
 ```
 
-2. modify `package.json`
+2. modify `package.json`,change `node_modules/tsest/run` to `script.ts`.
 
 ```json
 "scripts": {
@@ -70,10 +95,3 @@ RUN({
     "watch": "node -r ts-node/register script.ts -w"
 },
 ```
-
-
-
-## For JavaScript
-
-NTTest amaid for typescript, but also in JavaScript 
-

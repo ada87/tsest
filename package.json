@@ -1,14 +1,11 @@
 {
   "name": "tsest",
-  "version": "0.0.1",
-  "description": "Bootstarp Tool of `node:test`, for TypeScript Project, Extremely simple.",
+  "version": "0.0.2",
+  "description": "Extremely simple bootstarp of node:test, for TypeScript Project.",
   "author": "Xiang Da",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/ada87/tsest"
-  },
-  "devDependencies": {
-    "@types/node": "^20.5.9"
   }
 }
