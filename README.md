@@ -1,11 +1,13 @@
-# TypeScript-Test
+# tsest
 
-tsest is a Bootstarp Tool of `node:test`, for `TypeScript` Project.
+[中文](README_ZH.md)  | ![npm version](https://img.shields.io/npm/v/tsest.svg?style=flat)
 
-No modify for test framework, Write testcase in official syntax, ref:
+**tsest** is a Bootstarp Script of `node:test`, support `typescript`, None dependencies;
 
-1. Node Official Test : https://nodejs.org/api/test.html
-2. Node Official Assert : https://nodejs.org/api/assert.html
+Write testcase in official syntax, ref:
+
+1. Node Test : https://nodejs.org/api/test.html
+2. Node Assert : https://nodejs.org/api/assert.html
 
 
 ## Ussage
@@ -54,13 +56,13 @@ npm run watch
 
 ## Custom Ussage
 
-Use `node_modules/tsest/run.js`, can start test without any code. But args is default:
+Use `node_modules/tsest/run`, can start test without any code. But args is default:
 
-|param|type|default|
-|---|---|---|
-|root| string | `./src` if exists, nor: `./` |
-|suffix| string | '.test.ts' |
-|filter| (filePath: string) => boolean | ()=>true |
+| param  | type                          | default                      |
+| ------ | ----------------------------- | ---------------------------- |
+| root   | string                        | `./src` if exists, nor: `./` |
+| suffix | string                        | '.test.ts'                   |
+| filter | (filePath: string) => boolean | ()=>true                     |
 
 
 you can change it by custom code:

@@ -1,27 +1,114 @@
 import assert from 'node:assert';
 
+/**
+ *  https://nodejs.org/api/assert.html
+*/
 
-export const equal = (fn: Function, dataSet: Array<Array<any>>, ctx = null) => {
-    for (let i = 0, _i = dataSet.length; i < _i; i++) {
-        let item = dataSet[i];
-        const result = fn.apply(ctx, item.slice(0, item.length - 1));
-        assert.equal(result, item[item.length - 1]);
+const params = (item: Array<any>): [Array<any>, any] => {
+    return [item.slice(0, item.length - 1), item[item.length - 1]]
+}
 
+// Batch equal
+export const equal = (fn: Function, dataSet: Array<Array<any>>, ctx: any = null) => {
+    for (let item of dataSet) {
+        const [args, expected] = params(item);
+        const actual = fn.apply(ctx, args);
+        assert.equal(actual, expected);
     }
 }
 
-export const strictEqual = (fn: Function, dataSet: Array<Array<any>>, ctx = null) => {
-    for (let i = 0, _i = dataSet.length; i < _i; i++) {
-        let item = dataSet[i];
-        const result = fn.apply(ctx, item.slice(0, item.length - 1));
-        assert.strictEqual(result, item[item.length - 1]);
 
+// Batch notEqual
+export const notEqual = (fn: Function, dataSet: Array<Array<any>>, ctx: any = null) => {
+    for (let item of dataSet) {
+        const [args, expected] = params(item);
+        const actual = fn.apply(ctx, args);
+        assert.notEqual(actual, expected);
     }
 }
 
-export const doesNotThrow = (fn: Function, dataSet: Array<Array<any>>, ctx = null) => {
-    for (let i = 0, _i = dataSet.length; i < _i; i++) {
-        let item = dataSet[i];
-        assert.doesNotThrow(fn.apply(ctx, item))
+
+
+// Batch deepEqual
+export const deepEqual = (fn: Function, dataSet: Array<Array<any>>, ctx: any = null) => {
+    for (let item of dataSet) {
+        const [args, expected] = params(item);
+        const actual = fn.apply(ctx, args);
+        assert.deepEqual(actual, expected);
     }
 }
+
+// Batch notDeepEqual
+export const notDeepEqual = (fn: Function, dataSet: Array<Array<any>>, ctx: any = null) => {
+    for (let item of dataSet) {
+        const [args, expected] = params(item);
+        const actual = fn.apply(ctx, args);
+        assert.notDeepEqual(actual, expected);
+    }
+}
+
+// Batch strictEqual
+export const strictEqual = (fn: Function, dataSet: Array<Array<any>>, ctx: any = null) => {
+    for (let item of dataSet) {
+        const [args, expected] = params(item);
+        const actual = fn.apply(ctx, args);
+        assert.strictEqual(actual, expected);
+    }
+}
+
+// Batch notStrictEqual
+export const notStrictEqual = (fn: Function, dataSet: Array<Array<any>>, ctx: any = null) => {
+    for (let item of dataSet) {
+        const [args, expected] = params(item);
+        const actual = fn.apply(ctx, args);
+        assert.notStrictEqual(actual, expected);
+    }
+}
+
+// Batch deepStrictEqual
+export const deepStrictEqual = (fn: Function, dataSet: Array<Array<any>>, ctx: any = null) => {
+    for (let item of dataSet) {
+        const [args, expected] = params(item);
+        const actual = fn.apply(ctx, args);
+        assert.deepStrictEqual(actual, expected);
+    }
+}
+
+// Batch notDeepStrictEqual
+export const notDeepStrictEqual = (fn: Function, dataSet: Array<Array<any>>, ctx: any = null) => {
+    for (let item of dataSet) {
+        const [args, expected] = params(item);
+        const actual = fn.apply(ctx, args);
+        assert.notDeepStrictEqual(actual, expected);
+    }
+}
+
+
+
+// Batch match and doesNotMatch
+export const match = (reg: RegExp, dataSet: Array<[string, boolean]>) => {
+    for (let [item, isMatch] of dataSet) {
+        if (isMatch) {
+            assert.match(item, reg);
+        } else {
+            assert.doesNotMatch(item, reg)
+        }
+    }
+}
+
+
+export const isTrue = (fn: Function, dataSet: Array<Array<any>>, ctx: any = null) => {
+    for (let item of dataSet) {
+        const actual = fn.apply(item);
+        assert.equal(actual, true);
+    }
+}
+
+export const isFalse = (fn: Function, dataSet: Array<Array<any>>, ctx: any = null) => {
+    for (let item of dataSet) {
+        const actual = fn.apply(ctx, item);
+        assert.equal(actual, false);
+    }
+}
+
+

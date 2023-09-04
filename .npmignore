@@ -2,3 +2,8 @@ node_modules/
 tsconfig.json
 .gitignore
 .vscode
+test.ts
+assert.ts
+run.ts
+start.ts
+watch.ts
