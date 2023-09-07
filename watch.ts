@@ -30,7 +30,8 @@ export const watch = (options?: RunTestOptions) => {
         console.log(`${colorGray('✔')} ${colorGreen(info.name)} ${colorGray('(' + info.details.duration_ms.toFixed(4) + 'ms)')}`)
     })
     TESTER.on('test:stderr', (err) => {
-        console.error(err)
+        console.error(err.message)
+        // if(err.c)
     })
     TESTER.on('test:stdout', (info) => {
         console.log(info.message)

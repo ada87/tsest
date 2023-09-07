@@ -2,6 +2,7 @@ node_modules/
 tsconfig.json
 .gitignore
 .vscode
+index.ts
 test.ts
 assert.ts
 run.ts
