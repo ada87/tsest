@@ -1,6 +1,6 @@
 {
   "name": "tsest",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Extremely simple bootstarp of node:test, for TypeScript Project.",
   "author": "Xiang Da",
   "main": "index.js",

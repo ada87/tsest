@@ -9,7 +9,7 @@ import assert from 'node:assert';
 // }
 
 
-type FunctionArguments = any[];
+type FunctionArguments = any | any[];
 type FunctionReturn = any;
 type ResultCheckFunction<T> = (result: T) => boolean;
 
@@ -25,10 +25,19 @@ export type DataSetWithResult = RecordByResult[];
 export type DataSetWithChecker<T = any> = RecordByCheckFunction<T>[];
 
 
+const getArgRtn = (record: RecordByResult | RecordByCheckFunction): [any[], any] => {
+
+    const [arg, rtn] = record
+    if (arg instanceof Array) {
+        return [arg, rtn]
+    }
+    return [[arg], rtn]
+}
+
 // Batch equal
 export const equal = (fn: Function, dataSet: DataSetWithResult, ctx: any = null) => {
     for (let item of dataSet) {
-        const [args, expected] = item
+        const [args, expected] = getArgRtn(item);
         const actual = fn.apply(ctx, args);
         assert.equal(actual, expected);
     }
@@ -38,7 +47,7 @@ export const equal = (fn: Function, dataSet: DataSetWithResult, ctx: any = null)
 // Batch notEqual
 export const notEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any = null) => {
     for (let item of dataSet) {
-        const [args, expected] = item
+        const [args, expected] =  getArgRtn(item);
         const actual = fn.apply(ctx, args);
         assert.notEqual(actual, expected);
     }
@@ -49,7 +58,7 @@ export const notEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any = nu
 // Batch deepEqual
 export const deepEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any = null) => {
     for (let item of dataSet) {
-        const [args, expected] = item
+        const [args, expected] =  getArgRtn(item);
         const actual = fn.apply(ctx, args);
         assert.deepEqual(actual, expected);
     }
@@ -58,7 +67,7 @@ export const deepEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any = n
 // Batch notDeepEqual
 export const notDeepEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any = null) => {
     for (let item of dataSet) {
-        const [args, expected] = item
+        const [args, expected] =  getArgRtn(item);
         const actual = fn.apply(ctx, args);
         assert.notDeepEqual(actual, expected);
     }
@@ -67,7 +76,7 @@ export const notDeepEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any 
 // Batch strictEqual
 export const strictEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any = null) => {
     for (let item of dataSet) {
-        const [args, expected] = item
+        const [args, expected] =  getArgRtn(item);
         const actual = fn.apply(ctx, args);
         assert.strictEqual(actual, expected);
     }
@@ -76,7 +85,7 @@ export const strictEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any =
 // Batch notStrictEqual
 export const notStrictEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any = null) => {
     for (let item of dataSet) {
-        const [args, expected] = item
+        const [args, expected] =  getArgRtn(item);
         const actual = fn.apply(ctx, args);
         assert.notStrictEqual(actual, expected);
     }
@@ -85,7 +94,7 @@ export const notStrictEqual = (fn: Function, dataSet: DataSetWithResult, ctx: an
 // Batch deepStrictEqual
 export const deepStrictEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any = null) => {
     for (let item of dataSet) {
-        const [args, expected] = item;
+        const [args, expected] =  getArgRtn(item);;
         const actual = fn.apply(ctx, args);
         assert.deepStrictEqual(actual, expected);
     }
@@ -94,7 +103,7 @@ export const deepStrictEqual = (fn: Function, dataSet: DataSetWithResult, ctx: a
 // Batch notDeepStrictEqual
 export const notDeepStrictEqual = (fn: Function, dataSet: DataSetWithResult, ctx: any = null) => {
     for (let item of dataSet) {
-        const [args, expected] = item;
+        const [args, expected] =  getArgRtn(item);;
         const actual = fn.apply(ctx, args);
         assert.notDeepStrictEqual(actual, expected);
     }
@@ -128,21 +137,32 @@ export const isFalse = (fn: Function, dataSet: DataSetArguments, ctx: any = null
     }
 }
 
+export const throws = (fn: Function, dataSet: DataSetArguments, ctx: any = null) => {
+    for (let args of dataSet) {
+        assert.throws(() => fn.apply(ctx, args))
+    }
+}
+
 export const doesNotThrow = (fn: Function, dataSet: DataSetArguments, ctx: any = null) => {
     for (let args of dataSet) {
-        assert.doesNotThrow(fn.apply(ctx, args))
+        assert.doesNotThrow(() => fn.apply(ctx, args))
+    }
+}
+export const rejects = (fn: Function, dataSet: DataSetArguments, ctx: any = null) => {
+    for (let args of dataSet) {
+        assert.rejects(() => fn.apply(ctx, args))
     }
 }
 
 export const doesNotReject = (fn: Function, dataSet: DataSetArguments, ctx: any = null) => {
     for (let args of dataSet) {
-        assert.doesNotReject(fn.apply(ctx, args))
+        assert.doesNotReject(() => fn.apply(ctx, args))
     }
 }
 
 export const byCheckFunction = <T = any>(fn: (...args: any[]) => T, dataSet: DataSetWithChecker<T>, ctx: any = null) => {
     for (let record of dataSet) {
-        const [args, checker] = record;
+        const [args, checker] =  getArgRtn(record);;
         const returnValue = fn.apply(ctx, args);
         assert.equal(checker(returnValue), true);
     }
