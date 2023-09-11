@@ -1,10 +1,9 @@
 import { readdirSync, existsSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
-import { EOL } from 'os'
 import { run } from 'node:test';
+import { EOL } from 'node:os'
+
 const SIGN = '\u001b[';
-
-
 const style = (msg: string, code: number[]) => SIGN + code[0] + 'm' + msg + SIGN + code[1] + 'm';
 const colorRed = (msg: string) => style(msg, [31, 39]);
 const colorGreen = (msg: string) => style(msg, [32, 39]);
@@ -12,35 +11,6 @@ const colorYellow = (msg: string) => style(msg, [33, 39]);
 const colorGray = (msg: string) => style(msg, [90, 39]);
 const bgYellow = (msg: string) => style(msg, [43, 49]);
 
-const getString = (data: any): string => {
-    switch (typeof data) {
-        case 'bigint':
-        case 'boolean':
-        case 'number':
-            return data.toString();
-        case 'string':
-            return data;
-        case 'function':
-            return data.toString();
-        case 'object':
-            if (data instanceof Error) {
-                //                 if (data.stack) {
-                //                     return `${data.name + ' : ' + bgYellow(data.message)}
-                // ${data.stack}`
-                //                 }
-                return bgYellow(data.name + ' : ' + data.message)
-            }
-            return JSON.stringify(data);
-        case 'symbol':
-            return data.toString();
-        case 'undefined':
-            return 'undefined'
-
-
-        default:
-            return '';
-    }
-}
 
 // const RunOptions = Pat
 export type RunTestOptions = {
@@ -96,22 +66,15 @@ export const watch = (options?: RunTestOptions, files?: string[]) => {
 
 
     TESTER.on('test:fail', (info) => {
-        console.log('ggggggggggggggggggggggggggggggggg')
-        // console.log(info.details)
         process.stdout.write(`${colorYellow('✖')} ${colorRed(info.name)} : ${info.details.error.message}` + EOL)
     })
     TESTER.on('test:pass', (info) => {
-        console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
         process.stdout.write(`${colorGray('✔')} ${colorGreen(info.name)} ${colorGray('(' + info.details.duration_ms.toFixed(4) + 'ms)')}` + EOL)
     })
     TESTER.on('test:stderr', (err) => {
-        console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-        console.log(err)
         process.stderr.write(err.message)
     })
     TESTER.on('test:stdout', (info) => {
-        console.log('ooooooooooooooooooooooooooooooo')
-
         process.stdout.write(info.message)
     })
 }
@@ -147,7 +110,6 @@ const AutoStart = () => {
     if (process.argv.length < 2) return;
     const CMD = 'tsest' + sep + 'run';
     if (!(process.argv[1].endsWith(CMD) || process.argv[1].endsWith(CMD + '.js'))) return;
-    // console.log('start')
     const ExecArg = new Set(process.execArgv);
     const CmdArg = new Set(process.argv);
     const runOptions: RunTestOptions = {

@@ -289,7 +289,35 @@ export const testByCheckFunction = <T>(fn: (...args: any[]) => T, args: Function
 export const testByCheckFunctionBatch = <T>(fn: (...args: any[]) => T, records: DataSetWithChecker<T>, self: any = null) => test(`Test [${fn.name}]`, () => byCheckFunctionBatch(fn, records, self));
 
 
+// const getString = (data: any): string => {
+//     switch (typeof data) {
+//         case 'bigint':
+//         case 'boolean':
+//         case 'number':
+//             return data.toString();
+//         case 'string':
+//             return data;
+//         case 'function':
+//             return data.toString();
+//         case 'object':
+//             if (data instanceof Error) {
+//                 //                 if (data.stack) {
+//                 //                     return `${data.name + ' : ' + bgYellow(data.message)}
+//                 // ${data.stack}`
+//                 //                 }
+//                 return bgYellow(data.name + ' : ' + data.message)
+//             }
+//             return JSON.stringify(data);
+//         case 'symbol':
+//             return data.toString();
+//         case 'undefined':
+//             return 'undefined'
 
+
+//         default:
+//             return '';
+//     }
+// }
 
 
 // Custom Message , Some Bug course Not effect ,todo
