@@ -29,6 +29,13 @@ npm install --save-dev typescript ts-node tsest
     "test": "node -r ts-node/register node_modules/tsest/run",
     "watch":"node -r ts-node/register node_modules/tsest/run -w", 
 }
+
+或是 ESM:
+
+{
+    "test": "node --loader ts-node/esm node_modules/tsest/run",
+    "watch": "node --loader ts-node/esm node_modules/tsest/run --watch"
+}
 ```
 
 3. 编写测试用便: 默认以  `.test.ts` 为后缀，示例：
@@ -96,5 +103,5 @@ if (cmd == '--watch' || cmd == '-w') {
 "scripts": {
     "test": "node -r ts-node/register script.ts",
     "watch": "node -r ts-node/register script.ts -w"
-},
+}
 ```

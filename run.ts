@@ -93,7 +93,7 @@ const getOptions = (options?: RunTestOptions): [Required<RunTestOptions>, string
         }
     }
     if (opt.suffix == undefined) {
-        opt.suffix = process.execArgv.indexOf('ts-node/register') >= 0 ? '.test.ts' : '.test.js';
+        opt.suffix = process.execArgv.indexOf('ts-node/') >= 0 ? '.test.ts' : '.test.js';
     }
     const FILTER = opt.filter instanceof Function ? opt.filter : (name: string) => true;
     const files = (readdirSync(opt.root, { recursive: true }) as string[])
@@ -113,7 +113,10 @@ const AutoStart = () => {
     const ExecArg = new Set(process.execArgv);
     const CmdArg = new Set(process.argv);
     const runOptions: RunTestOptions = {
-        suffix: ExecArg.has('ts-node/register') ? '.test.ts' : '.test.js',
+        suffix: (ExecArg.has('ts-node/register') ||
+            ExecArg.has('ts-node/esm'))
+
+            ? '.test.ts' : '.test.js',
     }
 
     for (let arg of process.argv.slice(2)) {

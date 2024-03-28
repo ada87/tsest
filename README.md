@@ -27,6 +27,13 @@ npm install --save-dev typescript ts-node tsest
     "test": "node -r ts-node/register node_modules/tsest/run",
     "watch":"node -r ts-node/register node_modules/tsest/run --watch", 
 }
+
+OR ESM:
+
+{
+    "test": "node --loader ts-node/esm node_modules/tsest/run",
+    "watch": "node --loader ts-node/esm node_modules/tsest/run --watch"
+}
 ```
 
 3. Write Test code with suffix : `.test.ts` , eg. `sum.test.ts`
