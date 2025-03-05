@@ -58,9 +58,11 @@ const parseArg = (options: TestOptions, param: string) => {
             options.timeout = timeout;
             return;
         case '--test-name-pattern':
+        case '--name-pattern':
             options.testNamePatterns = toPattern(value);
             return;
         case '--test-skip-pattern':
+        case '--skip-pattern':
             options.testSkipPatterns = toPattern(value);
             return;
         case '--test-file-pattren':

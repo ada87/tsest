@@ -70,8 +70,8 @@ node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.t
 | Parameter             | Description          |
 | --------------------- | -------------------- |
 | --root                | Specify test root directory |
-| --test-file-name      | Specify test file suffix |
-| --test-file-suffix    | Specify test file suffix |
+| --test-file-pattern      | Specify test file name pattern , alias --test-file-name, --file-name |
+| --test-file-suffix    | Specify test file suffix, alias --file-suffix |
 | --timeout             | Timeout, ms          |
 | --force-exit          | Force exit           |
 
@@ -93,9 +93,7 @@ test('test case', () => {
 
 ```typescript
 import {
-
     test,                       // test is equivalent to import { test } from 'node:test'
-
     assert,                     // assert is different from node:assert, with some message optimizations,
                                 // if you need to use native assertions, please use node:assert
     equal, equalAsync,          // taking equal as an example, all assertions have 8 methods for async x batch x quick test
@@ -147,7 +145,7 @@ testEqualBatchAsync(sum, [
 ])
 ```
 
-```
+```bash
 npm test
 ✅ test case (0.6166ms)
 ✅ test async case (2005.9943ms)

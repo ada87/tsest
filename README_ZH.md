@@ -48,29 +48,29 @@ node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.t
 ### 支持性说明
 
   
-| node 参数                          | 支持性                                   |
-| -------------------------------- | ------------------------------------- |
-| --test-concurrency               | ✅                                     |
-| --watch                          | ✅                                     |
-| --test-name-pattern              | ✅                                     |
-| --test-skip-pattern              | ✅                                     |
-| --test                           | ❌                                     |
-| --no-experimental-strip-types    | ✅❌  (支持解析此参数，目前此参数存在BUG，建议使用 ts-node) |
-| --experimental-test-coverage     | ❌                                     |
-| -test-coverage-include           | ❌                                     |
-| --test-coverage-exclude          | ❌                                     |
-| --test-reporter                  | ❌                                     |
-| --test-reporter-destination      | ❌                                     |
-| --test-update-snapshots          | ❌                                     |
-| --experimental-test-module-mocks | ❌                                     |
+| node 参数                          | 支持性                                   | 说明 ｜
+| -------------------------------- | ------------------------------------- |----｜
+| --test-concurrency               | ✅                                     |｜
+| --watch                          | ✅                                     |｜
+| --test-name-pattern              | ✅                                     | 支持别名 --name-pattern ｜
+| --test-skip-pattern              | ✅                                     | 支持别名 --skip-pattern｜
+| --no-experimental-strip-types    | ✅ ❌    								|(支持解析此参数，目前此参数存在BUG，建议使用 ts-node)｜
+| --test                           | ❌                                     |｜
+| --experimental-test-coverage     | ❌                                     |｜
+| -test-coverage-include           | ❌                                     |｜
+| --test-coverage-exclude          | ❌                                     |｜
+| --test-reporter                  | ❌                                     |｜
+| --test-reporter-destination      | ❌                                     |｜
+| --test-update-snapshots          | ❌                                     |｜
+| --experimental-test-module-mocks | ❌                                     |｜
 
 `tsest` 额外支持
 
 | 参数                 | 说明       |
 | ------------------ | -------- |
-| --root             | 指定测试根目录  |
-| --test-file-name   | 指定测试文件后缀 |
-| --test-file-suffix | 指定测试文件后缀 |
+| --root             | 指定代码根目录，不指定时，会先探测 './src'，不存在时则默认当前目录  |
+| --test-file-pattern   | 指定测试文件后缀，别名 --test-file-name , --file-name |
+| --test-file-suffix | 指定测试文件后缀，别名 --file-suffix |
 | --timeout          | 超时时间, ms |
 | --force-exit       | 强制退出     |
 
@@ -92,9 +92,7 @@ test('test case',()=>{
 
 ```typescript
 import {
-
     test,                       // test 与 import { test } from  'node:test' 完全等效
-
     assert,                     // assert 不同于 node:assert ， 进行了部分消息优化，
 							    // 如需要使用原生断言 ，请使用 node:assert
     equal, equalAsync,          // 以 equal 为例，所有的断言都有 异步 x 批量 x 快捷test 8个方法
@@ -147,7 +145,7 @@ testEqualBatchAsync(sum, [
 ])
 ```
 
-```
+```bash
 npm test
 ✅ test case (0.6166ms)
 ✅ test async case (2005.9943ms)
