@@ -7,3 +7,5 @@ index.ts
 *.ts
 !*.d.ts
 build
+*.test.js
+*.test.d.ts
