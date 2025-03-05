@@ -1,10 +1,9 @@
 node_modules/
 tsconfig.json
+pnpm-lock.yaml
 .gitignore
 .vscode
 index.ts
-test.ts
-assert.ts
-run.ts
-start.ts
-watch.ts
+*.ts
+!*.d.ts
+build

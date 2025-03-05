@@ -1,9 +1,10 @@
 {
   "name": "tsest",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Extremely simple bootstarp of node:test, for TypeScript Project.",
   "author": "Xiang Da",
   "main": "index.js",
+  "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,4 +1,6 @@
 node_modules
+pnpm-lock.yaml
 *.d.ts
 *.js
 .vscode
+build

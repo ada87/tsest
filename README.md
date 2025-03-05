@@ -2,105 +2,157 @@
 
 [中文](README_ZH.md)  | ![npm version](https://img.shields.io/npm/v/tsest.svg?style=flat)
 
-**tsest** is a Bootstarp Script of `node:test`, support `typescript`, None dependencies;
 
-Write testcase in official syntax, ref:
+## Introduction
 
-1. Node Test : https://nodejs.org/api/test.html
-2. Node Assert : https://nodejs.org/api/assert.html
+**tsest** is a unit test runner script based on `node:test`, supporting `typescript`.
 
+1. Based on native `node:test`📍, using standard [Test API](https://nodejs.org/api/test.html) and [Assert API](https://nodejs.org/api/assert.html).
+2. TypeScript
+3. Supports most parameters of the native `node --test` runner, with additional filtering parameters
+4. Optimized error messages 🚀
+5. Provides a full set of convenient APIs
 
-## Ussage
+## Installation
 
-1. Install
+### Install related libraries
 
 ```bash
-# For ts usage, must install typescript ts-node in your project.
-npm install --save-dev typescript ts-node tsest
+# In a typescript project, you need to install typescript and ts-node
+npm install --save-dev typescript @types/node ts-node tsest
 ```
 
-2. Edit package.json
-
+### Edit package.json
 
 ```json
-{
+"scripts": {
     "test": "node -r ts-node/register node_modules/tsest/run",
-    "watch":"node -r ts-node/register node_modules/tsest/run --watch", 
+    "watch":"node -r ts-node/register node_modules/tsest/run --watch"
 }
-
-OR ESM:
-
-{
+Or ESM:
+"scripts": {
     "test": "node --loader ts-node/esm node_modules/tsest/run",
     "watch": "node --loader ts-node/esm node_modules/tsest/run --watch"
 }
 ```
 
-3. Write Test code with suffix : `.test.ts` , eg. `sum.test.ts`
+## Run
+
+```bash
+# Run test cases
+npm run test
+# Watch mode
+npm run watch
+# You can also run through the node command
+node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.test.ts --test-only
+```
+
+### Support Description
+
+| node parameter                    | Support                                  |
+| --------------------------------- | ---------------------------------------- |
+| --test-concurrency                | ✅                                        |
+| --watch                           | ✅                                        |
+| --test-name-pattern               | ✅                                        |
+| --test-skip-pattern               | ✅                                        |
+| --test                            | ❌                                        |
+| --no-experimental-strip-types     | ✅❌  (Supports parsing this parameter, but it has a BUG, it is recommended to use ts-node) |
+| --experimental-test-coverage      | ❌                                        |
+| -test-coverage-include            | ❌                                        |
+| --test-coverage-exclude           | ❌                                        |
+| --test-reporter                   | ❌                                        |
+| --test-reporter-destination       | ❌                                        |
+| --test-update-snapshots           | ❌                                        |
+| --experimental-test-module-mocks  | ❌                                        |
+
+`tsest` additional support
+
+| Parameter             | Description          |
+| --------------------- | -------------------- |
+| --root                | Specify test root directory |
+| --test-file-name      | Specify test file suffix |
+| --test-file-suffix    | Specify test file suffix |
+| --timeout             | Timeout, ms          |
+| --force-exit          | Force exit           |
+
+## API
+
+Using [node native API](https://nodejs.org/api/test.html) and [Assert API](https://nodejs.org/api/assert.html), as follows:
 
 ```typescript
 import { test } from 'node:test';
 import assert from 'node:assert';
-import { sum } from './mylib'; 
+import { sum } from './mylib';
 
-test('test case',()=>{
-    assert.strictEqual(sum(1,2), 3);
+test('test case', () => {
+    assert.equal(sum(1, 2), 3);
 });
 ```
 
-
-4. Done
-
-Run Command Interface
-
-```bash
-# Test Code
-npm run test 
-# Test Code Watch Mode
-npm run watch
-```
-
-
-## Custom Ussage
-
-Use `node_modules/tsest/run`, can start test without any code. But args is default:
-
-| param  | type                          | default                      |
-| ------ | ----------------------------- | ---------------------------- |
-| root   | string                        | `./src` if exists, nor: `./` |
-| suffix | string                        | '.test.ts'                   |
-| filter | (filePath: string) => boolean | ()=>true                     |
-
-
-you can change it by custom code:
-
-
-1. create script.ts 
+`tsest` provides more convenient equivalent APIs, optimized message prompts, and supports batch and asynchronous features.
 
 ```typescript
-import { start } from 'jstest/start';
-import { watch } from 'jstest/watch';
+import {
 
-// test '*.spec.test.ts' code in './lib', 'only test file ends with StringUtil.spec.test.ts'
-const options = { 
-    root: './lib',
-    suffix: '.spec.test.ts',
-    filter:(fileName:string)=>fileName.endsWith('StringUtil.spec.test.ts')
-}
+    test,                       // test is equivalent to import { test } from 'node:test'
 
-const cmd = process.argv[process.argv.length - 1];
-if (cmd == '--watch' || cmd == '-w') {
-    watch(options)
-} else {
-    start(options)
-}
+    assert,                     // assert is different from node:assert, with some message optimizations,
+                                // if you need to use native assertions, please use node:assert
+    equal, equalAsync,          // taking equal as an example, all assertions have 8 methods for async x batch x quick test
+    equalBatch, equalBatchAsync,
+    testEqual, testEqualAsync,
+    testEqualBatch, testEqualBatchAsync,
+} from 'tsest';
+
+const sum = (a: number, b: number) => a + b;
+const sumAsync = async (a: number, b: number) => new Promise(r => setTimeout(r, 1000, a + b));
+
+test('test case', () => {
+    assert.equal(sum(1, 2), 3);
+    equal(sum, [1, 2], 3);
+    equal(sum, [2, 3], 5);
+    equalBatch(sum, [
+        [[1, 2], 3],
+        [[2, 3], 5],
+    ])                      // Batch test, each record is an array
+})
+
+test('test async case', async () => {
+    // For asynchronous methods, use equalAsync for testing
+    // Please note that you need to add the await statement
+    await equalAsync(sumAsync, [1, 2], 3);
+    await equalAsync(sumAsync, [2, 3], 5);
+    await equalBatchAsync(sum, [
+        [[1, 2], 3],
+        [[2, 3], 5],
+    ])                      // Batch test asynchronous methods
+})
+
+// Directly test this method
+testEqual(sum, [1, 2], 3);
+
+// Directly perform batch testing
+testEqualBatch(sum, [
+    [[1, 2], 3],
+    [[2, 3], 5],
+])
+
+// Directly test asynchronous methods
+testEqualAsync(sumAsync, [1, 2], 3);
+
+// Directly perform batch testing of asynchronous methods
+testEqualBatchAsync(sum, [
+    [[1, 2], 3],
+    [[2, 3], 5],
+])
 ```
 
-2. modify `package.json`,change `node_modules/tsest/run` to `script.ts`.
-
-```json
-"scripts": {
-    "test": "node -r ts-node/register script.ts",
-    "watch": "node -r ts-node/register script.ts -w"
-},
+```
+npm test
+✅ test case (0.6166ms)
+✅ test async case (2005.9943ms)
+✅ Test [sum] (0.3962ms)
+✅ Test [sum] (0.1730ms)
+✅ Test [sumAsync] (1012.1937ms)
+✅ Test [sum] (0.6077ms)
 ```
