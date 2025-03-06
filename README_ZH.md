@@ -50,8 +50,8 @@ node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.t
   
 | node 参数                          | 支持性                                   | 说明 ｜
 | -------------------------------- | ------------------------------------- |----｜
-| --watch                          | ✅                                     |｜
-| --test-only                           | ✅                                     |｜
+| --watch                          | ✅                                     | ｜
+| --test-only                           | ✅                                     | ｜
 | --test-name-pattern              | ✅                                     | 支持别名 --name-pattern ｜
 | --test-skip-pattern              | ✅                                     | 支持别名 --skip-pattern｜
 | --test-concurrency               | ✅                                     |｜

@@ -52,7 +52,7 @@ node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.t
 | node parameter                    | Support                                  | Note |
 | --------------------------------- | ---------------------------------------- | ------ |
 | --watch                           | ✅                                        | |
-| --test-only                       | ✅                                     |｜
+| --test-only                       | ✅                                     | ｜
 | --test-name-pattern               | ✅                                        | support alias `--name-pattern` |
 | --test-skip-pattern               | ✅                                        | support alias `--skip-pattern` |
 | --test-concurrency                | ✅                                    | support alias `--concurrency` |
