@@ -8,7 +8,6 @@ import { colorGray, colorRed, colorGreen, tipError, colorYellow, colorBlue } fro
 type ExtractRunOptions<T> = T extends (options?: infer R) => any ? R : never;
 type RunOptions = ExtractRunOptions<typeof run>;
 
-
 export type TestOptions = Pick<RunOptions, 'watch' | 'only' | 'forceExit' | 'timeout' | 'concurrency'> & {
     root: string
     fileSuffix: string
@@ -19,7 +18,7 @@ export type TestOptions = Pick<RunOptions, 'watch' | 'only' | 'forceExit' | 'tim
 const DEFAULT_ARGS = [...process.argv, ...process.execArgv];
 const ExecArg = new Set(DEFAULT_ARGS);
 const IS_TS = ExecArg.has('ts-node/register') || ExecArg.has('ts-node/esm') || ExecArg.has('--experimental-strip-types');
-
+if (ExecArg.has('--strict')) process.env.TSEST_STRICT = 'true'
 
 
 const toPattern = (value: string): TestOptions['testNamePatterns'] => {

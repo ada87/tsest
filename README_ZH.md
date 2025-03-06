@@ -4,14 +4,14 @@
 
 ## 介绍
   
-**tsest** 是一个基于 `node:test` 的单元测试启动脚本，支持 `typescript`。
+**tsest** 是一个基于 `node:test` 的单元测试启动器，支持 `typescript`。
 
   
-1. 基于原生 `node:test`📍， 使用标准 [测试API](https://nodejs.org/api/test.html) 及 [断言API](https://nodejs.org/api/assert.html)。
-2. TypeScript
-3. 支持原生 `node --test` 启动器的大部分参数, 另额外支持一些过滤参数
-4. 优化错误提示 🚀
-5. 提供全套便捷 API
+1. TypeScript 
+2. 原生 [node:test](https://nodejs.org/api/test.html)📍。
+3. 无依赖，无插件，零配置，无代码污染。
+4. 优化错误提示 🚀, 支持参数使用严格模式！
+5. 全套测试/断言 便捷 API（ 批量 x 异步 x 快捷方式 ）
 
 
 ## 安装
@@ -50,14 +50,14 @@ node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.t
   
 | node 参数                          | 支持性                                   | 说明 ｜
 | -------------------------------- | ------------------------------------- |----｜
-| --test-concurrency               | ✅                                     |｜
 | --watch                          | ✅                                     |｜
+| --test-only                           | ✅                                     |｜
 | --test-name-pattern              | ✅                                     | 支持别名 --name-pattern ｜
 | --test-skip-pattern              | ✅                                     | 支持别名 --skip-pattern｜
+| --test-concurrency               | ✅                                     |｜
 | --no-experimental-strip-types    | ✅ ❌    								|(支持解析此参数，目前此参数存在BUG，建议使用 ts-node)｜
-| --test                           | ❌                                     |｜
 | --experimental-test-coverage     | ❌                                     |｜
-| -test-coverage-include           | ❌                                     |｜
+| --test-coverage-include           | ❌                                     |｜
 | --test-coverage-exclude          | ❌                                     |｜
 | --test-reporter                  | ❌                                     |｜
 | --test-reporter-destination      | ❌                                     |｜
@@ -71,6 +71,7 @@ node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.t
 | --root             | 指定代码根目录，不指定时，会先探测 './src'，不存在时则默认当前目录  |
 | --test-file-pattern   | 指定测试文件后缀，别名 --test-file-name , --file-name |
 | --test-file-suffix | 指定测试文件后缀，别名 --file-suffix |
+| --strict          | 使用 assert/strict, 默认 assert/default  |
 | --timeout          | 超时时间, ms |
 | --force-exit       | 强制退出     |
 
@@ -146,7 +147,7 @@ testEqualBatchAsync(sum, [
 ```
 
 ```bash
-npm test
+npm test # or npm run watch
 ✅ test case (0.6166ms)
 ✅ test async case (2005.9943ms)
 ✅ Test [sum] (0.3962ms)

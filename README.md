@@ -5,7 +5,7 @@
 
 ## Introduction
 
-**tsest** is a unit test runner script based on `node:test`, supporting `typescript`.
+**tsest** is a unit test runner script based on `node:test`, for `TypeScript`.
 
 1. Based on native `node:test`📍, using standard [Test API](https://nodejs.org/api/test.html) and [Assert API](https://nodejs.org/api/assert.html).
 2. TypeScript
@@ -49,29 +49,30 @@ node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.t
 
 ### Support Description
 
-| node parameter                    | Support                                  |
-| --------------------------------- | ---------------------------------------- |
-| --test-concurrency                | ✅                                        |
-| --watch                           | ✅                                        |
-| --test-name-pattern               | ✅                                        |
-| --test-skip-pattern               | ✅                                        |
-| --test                            | ❌                                        |
-| --no-experimental-strip-types     | ✅❌  (Supports parsing this parameter, but it has a BUG, it is recommended to use ts-node) |
-| --experimental-test-coverage      | ❌                                        |
-| -test-coverage-include            | ❌                                        |
-| --test-coverage-exclude           | ❌                                        |
-| --test-reporter                   | ❌                                        |
-| --test-reporter-destination       | ❌                                        |
-| --test-update-snapshots           | ❌                                        |
-| --experimental-test-module-mocks  | ❌                                        |
+| node parameter                    | Support                                  | Note |
+| --------------------------------- | ---------------------------------------- | ------ |
+| --watch                           | ✅                                        | |
+| --test-only                       | ✅                                     |｜
+| --test-name-pattern               | ✅                                        | support alias `--name-pattern` |
+| --test-skip-pattern               | ✅                                        | support alias `--skip-pattern` |
+| --test-concurrency                | ✅                                    | support alias `--concurrency` |
+| --no-experimental-strip-types     | ✅❌  | (Supports parsing this parameter, but it has a BUG, it is recommended to use ts-node) |
+| --experimental-test-coverage      | ❌                                        | |
+| --test-coverage-include            | ❌                                        | |
+| --test-coverage-exclude           | ❌                                        | |
+| --test-reporter                   | ❌                                        | |
+| --test-reporter-destination       | ❌                                        | |
+| --test-update-snapshots           | ❌                                        | |
+| --experimental-test-module-mocks  | ❌                                        | |
 
 `tsest` additional support
 
 | Parameter             | Description          |
 | --------------------- | -------------------- |
 | --root                | Specify test root directory |
-| --test-file-pattern      | Specify test file name pattern , alias --test-file-name, --file-name |
+| --test-file-pattern    | Specify test file name pattern , alias --test-file-name, --file-name |
 | --test-file-suffix    | Specify test file suffix, alias --file-suffix |
+| --strict             | use `assert/strict`, default is `assert/default`  |
 | --timeout             | Timeout, ms          |
 | --force-exit          | Force exit           |
 
@@ -95,6 +96,7 @@ test('test case', () => {
 import {
     test,                       // test is equivalent to import { test } from 'node:test'
     assert,                     // assert is different from node:assert, with some message optimizations,
+                                // run --strict to use node:assert/strict , or use assert:assert.default
                                 // if you need to use native assertions, please use node:assert
     equal, equalAsync,          // taking equal as an example, all assertions have 8 methods for async x batch x quick test
     equalBatch, equalBatchAsync,
@@ -146,7 +148,7 @@ testEqualBatchAsync(sum, [
 ```
 
 ```bash
-npm test
+npm test # or npm run watch
 ✅ test case (0.6166ms)
 ✅ test async case (2005.9943ms)
 ✅ Test [sum] (0.3962ms)
