@@ -15,6 +15,10 @@ import { equal, throws } from 'node:assert'
 // --test-reporter=spec --test-reporter=dot --test-reporter-destination=stdout --test-reporter-destination=file.txt 
 
 
+
+// tsc --module ESNext                                          
+// tsc --module commonjs
+
 test('getTestOptions Default', {
     // only: true
 }, () => {

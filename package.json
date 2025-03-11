@@ -16,5 +16,43 @@
     "testing",
     "typescript",
     "runner"
-  ]
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./index.d.ts",
+        "default": "./index.js"
+      },
+      "require": {
+        "types": "./index.d.cts",
+        "default": "./index.cjs"
+      },
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./run": {
+      "import": {
+        "types": "./run.d.ts",
+        "default": "./run.js"
+      },
+      "require": {
+        "types": "./run.d.cts",
+        "default": "./run.cjs"
+      },
+      "types": "./run.d.ts",
+      "default": "./run.js"
+    },
+    "./color  ": {
+      "import": {
+        "types": "./color.d.ts",
+        "default": "./color.js"
+      },
+      "require": {
+        "types": "./color.d.cts",
+        "default": "./color.cjs"
+      },
+      "types": "./color.d.ts",
+      "default": "./color.js"
+    }
+  }
 }
