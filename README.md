@@ -26,8 +26,8 @@ npm install --save-dev typescript @types/node ts-node tsest
 
 ```json
 "scripts": {
-    "test": "node -r ts-node/register node_modules/tsest/run",
-    "watch":"node -r ts-node/register node_modules/tsest/run --watch"
+    "test": "node -r ts-node/register node_modules/tsest/run.cjs",
+    "watch":"node -r ts-node/register node_modules/tsest/run.cjs --watch"
 }
 Or ESM:
 "scripts": {

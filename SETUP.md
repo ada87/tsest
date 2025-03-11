@@ -1,4 +1,11 @@
-# CommonJS
+# TypeScript
+
+1. default test file suffix is `.test.ts`
+2. use `run.cjs` test 'CommonJS' or `run.js` test 'ESM'
+3. use `ts-node` or `--experimental-strip-types` to support `TypeScript`
+4. at now, `--experimental-strip-types` has some issues, recommend use `ts-node`
+
+## CommonJS
 
 1. `tsconfig.json`
 
@@ -28,7 +35,7 @@
 ```
 
 
-# ESM
+## ESM
 
 1. `tsconfig`
 
@@ -65,7 +72,11 @@
 
 `tsest` also supports `JavaScript` files. suffix of Javascript Test file is `.test.js`.
 
-1. `package.json`
+not need `ts-node` or `--experimental-strip-types`
+
+## CommonJS
+
+`package.json`
 
 ```
 {
@@ -75,3 +86,16 @@
     }   
 }
 ```
+
+## ESM
+
+`package.json`
+
+```
+{
+    "type": "module",
+    "scripts": {
+        "test": "node node_modules/tsest/run.js",
+        "watch": "node node_modules/tsest/run.js --watch"
+    }
+}
