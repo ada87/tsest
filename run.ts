@@ -1,8 +1,8 @@
 import { readdirSync, existsSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { run, } from 'node:test';
+import { run } from 'node:test';
 import { EOL, cpus } from 'node:os'
-import { colorGray, colorRed, colorGreen, tipError, colorYellow, colorBlue } from './color'
+import { colorGray, colorRed, colorGreen, tipError, } from './color'
 
 
 type ExtractRunOptions<T> = T extends (options?: infer R) => any ? R : never;
@@ -15,11 +15,16 @@ export type TestOptions = Pick<RunOptions, 'watch' | 'only' | 'forceExit' | 'tim
     testNamePatterns?: RegExp
     testSkipPatterns?: RegExp
 }
+
 const DEFAULT_ARGS = [...process.argv, ...process.execArgv];
 const ExecArg = new Set(DEFAULT_ARGS);
-const IS_TS = ExecArg.has('ts-node/register') || ExecArg.has('ts-node/esm') || ExecArg.has('--experimental-strip-types');
-if (ExecArg.has('--strict')) process.env.TSEST_STRICT = 'true'
+const IS_ESM = ExecArg.has('--loader');
 
+const IS_TS = IS_ESM || ExecArg.has('ts-node/register') || ExecArg.has('--experimental-strip-types');
+
+
+
+if (ExecArg.has('--strict')) process.env.TSEST_STRICT = 'true'
 
 const toPattern = (value: string): TestOptions['testNamePatterns'] => {
     let txt = value;

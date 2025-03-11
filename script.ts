@@ -1,8 +1,7 @@
-import { existsSync, readdirSync, readFileSync, writeFileSync, rmSync, copyFileSync, renameSync, } from 'fs';
+import { existsSync, readdirSync, readFileSync, renameSync, writeFileSync, } from 'fs';
 import { exec } from 'child_process';
-import { resolve, join, sep } from 'path';
+import { resolve } from 'path';
 const __dirname = process.cwd();
-const distDir = resolve(__dirname, './dist')
 
 // node --experimental-strip-types script.ts
 
@@ -26,6 +25,30 @@ const CJS_MAPPING = new Map<string, string>([
     ['color.d.ts', 'color.d.cts'],
 ]);
 
+const reImport = () => {
+    const cjsRunPath = resolve(__dirname, 'run.cjs');
+    const cjsIdxPath = resolve(__dirname, 'index.cjs');
+    
+    const esmRunPath = resolve(__dirname, 'run.js');
+    const esmIdxPath = resolve(__dirname, 'index.js');
+
+    if (!existsSync(cjsRunPath) || !existsSync(esmRunPath) || !existsSync(cjsIdxPath) || !existsSync(esmIdxPath)) throw ('File not found');
+    
+
+    const cjsRunContent = readFileSync(cjsRunPath, 'utf-8').replace('"./color"', '"./color.cjs"');
+    writeFileSync(cjsRunPath, cjsRunContent, 'utf-8');
+    const cjsIdxContent = readFileSync(cjsIdxPath, 'utf-8').replace('"./color"', '"./color.cjs"');
+    writeFileSync(cjsIdxPath, cjsIdxContent, 'utf-8');
+
+
+    const esmRunContent = readFileSync(esmRunPath, 'utf-8').replace("'./color'", "'./color.js'");
+    writeFileSync(esmRunPath, esmRunContent, 'utf-8');
+    const esmIdxContent = readFileSync(esmIdxPath, 'utf-8').replace("'./color'", "'./color.js'");
+    writeFileSync(esmIdxPath, esmIdxContent, 'utf-8');
+}
+
+// tsc --project tsconfig.json --outDir ../oor/node_modules/tsest  --watch
+// tsc --project tsconfig.json --outDir ../oor/node_modules/tsest  --watch  --module ESNext --moduleResolution bundler
 const RunBuild = async () => {
     await runCommand('tsc --module commonjs --moduleResolution node');
     const files = readdirSync(__dirname);
@@ -36,11 +59,8 @@ const RunBuild = async () => {
         }
     }
     await runCommand('tsc --module ESNext --moduleResolution bundler');
-    // console.log(files);
-    // console.log(result);
-    // await runCommand('tsc --module commonjs');
 
-
+    reImport();
 }
 
 RunBuild()

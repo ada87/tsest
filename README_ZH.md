@@ -35,6 +35,9 @@ npm install --save-dev typescript @types/node ts-node tsest
     "watch": "node --loader ts-node/esm node_modules/tsest/run --watch"
 }
 ```
+
+[更多配置参考](./SETUP.md)
+
 ## 运行
 
 ```bash
@@ -55,7 +58,7 @@ node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.t
 | --test-name-pattern              | ✅                                     | 支持别名 --name-pattern ｜
 | --test-skip-pattern              | ✅                                     | 支持别名 --skip-pattern｜
 | --test-concurrency               | ✅                                     |｜
-| --no-experimental-strip-types    | ✅ ❌    								|(支持解析此参数，目前此参数存在BUG，建议使用 ts-node)｜
+| --no-experimental-strip-types    | ✅    								| ｜
 | --experimental-test-coverage     | ❌                                     |｜
 | --test-coverage-include           | ❌                                     |｜
 | --test-coverage-exclude          | ❌                                     |｜

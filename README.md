@@ -36,6 +36,9 @@ Or ESM:
 }
 ```
 
+[Full Configuration](./SETUP.md)
+
+
 ## Run
 
 ```bash
@@ -56,7 +59,7 @@ node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.t
 | --test-name-pattern               | ✅                                        | support alias `--name-pattern` |
 | --test-skip-pattern               | ✅                                        | support alias `--skip-pattern` |
 | --test-concurrency                | ✅                                    | support alias `--concurrency` |
-| --no-experimental-strip-types     | ✅❌  | (Supports parsing this parameter, but it has a BUG, it is recommended to use ts-node) |
+| --no-experimental-strip-types     | ✅  |  |
 | --experimental-test-coverage      | ❌                                        | |
 | --test-coverage-include            | ❌                                        | |
 | --test-coverage-exclude           | ❌                                        | |

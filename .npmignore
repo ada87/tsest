@@ -3,12 +3,7 @@ tsconfig.json
 pnpm-lock.yaml
 .gitignore
 .vscode
-index.ts
 *.ts
+*.test.ts
 !*.d.ts
 build
-script.js
-script.ts
-script.d.ts
-*.test.js
-*.test.d.ts
