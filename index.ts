@@ -490,3 +490,15 @@ export const testOkBatch = (fn: Function, records: FunctionArguments[], self: an
 export const testOkAsync = (fn: Function, args: FunctionArguments, self: any = null) => test(`Test [${fn.name}]`, async () => await okAsync(fn, args, self));
 export const testOkBatchAsync = (fn: Function, records: FunctionArguments[], self: any = null) => test(`Test [${fn.name}]`, async () => await okBatchAsync(fn, records, self));
 
+
+
+export const byCheckFunction = <T = any>(fn: (...args: any[]) => T, record: RecordByCheckFunction<T>, self: any = null) => {
+    const [args, checker] = getArgRtn(record);
+    const returnValue = fn.apply(self, args);
+    assert.equal(checker(returnValue), true);
+}
+export const byCheckFunctionBatch = <T = any>(fn: (...args: any[]) => T, records: DataSetWithChecker<T>, self: any = null) => {
+    for (let record of records) {
+        byCheckFunction(fn, record, self);
+    }
+}

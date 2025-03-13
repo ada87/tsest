@@ -1,9 +1,9 @@
-import { existsSync, readdirSync, readFileSync, renameSync, writeFileSync, } from 'fs';
+import { existsSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync, } from 'fs';
 import { exec } from 'child_process';
 import { resolve } from 'path';
-const __dirname = process.cwd();
-
 // node --experimental-strip-types script.ts
+
+const __dirname = process.cwd();
 
 const runCommand = (command: string) => {
     return new Promise((resolve, reject) => {
@@ -16,6 +16,7 @@ const runCommand = (command: string) => {
         });
     });
 }
+
 const CJS_MAPPING = new Map<string, string>([
     ['index.js', 'index.cjs'],
     ['index.d.ts', 'index.d.cts'],
@@ -28,12 +29,12 @@ const CJS_MAPPING = new Map<string, string>([
 const reImport = () => {
     const cjsRunPath = resolve(__dirname, 'run.cjs');
     const cjsIdxPath = resolve(__dirname, 'index.cjs');
-    
+
     const esmRunPath = resolve(__dirname, 'run.js');
     const esmIdxPath = resolve(__dirname, 'index.js');
 
     if (!existsSync(cjsRunPath) || !existsSync(esmRunPath) || !existsSync(cjsIdxPath) || !existsSync(esmIdxPath)) throw ('File not found');
-    
+
 
     const cjsRunContent = readFileSync(cjsRunPath, 'utf-8').replace('"./color"', '"./color.cjs"');
     writeFileSync(cjsRunPath, cjsRunContent, 'utf-8');
@@ -47,8 +48,9 @@ const reImport = () => {
     writeFileSync(esmIdxPath, esmIdxContent, 'utf-8');
 }
 
-// tsc --project tsconfig.json --outDir ../oor/node_modules/tsest  --watch
-// tsc --project tsconfig.json --outDir ../oor/node_modules/tsest  --watch  --module ESNext --moduleResolution bundler
+// tsc --project tsconfig.json --outDir ../oor/node_modules/tsest --watch
+// tsc --project tsconfig.json --outDir ../oor/node_modules/tsest --watch --module ESNext --moduleResolution bundler
+
 const RunBuild = async () => {
     await runCommand('tsc --module commonjs --moduleResolution node');
     const files = readdirSync(__dirname);
@@ -63,4 +65,15 @@ const RunBuild = async () => {
     reImport();
 }
 
+const RunClean = () => {
+    const files = readdirSync(__dirname);
+    for (const file of files) {
+        if (file.endsWith('.d.cts') || file.endsWith('.cjs') || file.endsWith('.d.ts') || file.endsWith('.js')) {
+            rmSync(resolve(__dirname, file));
+            // console.log(file)
+        }
+    }
+}
+// node --experimental-strip-types script.ts
 RunBuild()
+// RunClean();

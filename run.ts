@@ -2,7 +2,7 @@ import { readdirSync, existsSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { run } from 'node:test';
 import { EOL, cpus } from 'node:os'
-import { colorGray, colorRed, colorGreen, tipError, } from './color'
+import { colorGray, colorRed, colorGreen, tipError, } from './color';
 
 
 type ExtractRunOptions<T> = T extends (options?: infer R) => any ? R : never;
