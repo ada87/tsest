@@ -51,6 +51,7 @@ const parseArg = (options: TestOptions, param: string) => {
             options.watch = value === 'false' ? false : true;
             return;
         case '--test-only':
+        case '--testOnly':
             options.only = value === 'false' ? false : true;
             return;
         case '--force-exit':
@@ -63,19 +64,23 @@ const parseArg = (options: TestOptions, param: string) => {
             return;
         case '--test-name-pattern':
         case '--name-pattern':
+        case '--namePattern':
             options.testNamePatterns = toPattern(value);
             return;
         case '--test-skip-pattern':
         case '--skip-pattern':
+        case '--skipPattern':
             options.testSkipPatterns = toPattern(value);
             return;
-        case '--test-file-pattren':
+        case '--test-file-pattern':
         case '--test-file-name':
         case '--file-name':
+        case '--fileName':
             options.globPatterns = toPattern(value);
             return;
         case '--test-file-suffix':
         case '--file-suffix':
+        case '--fileSuffix':
             if (value.length > 0) options.fileSuffix = value;
             return;
         case '--test-concurrency':
@@ -92,7 +97,7 @@ const parseArg = (options: TestOptions, param: string) => {
             }
             return max;
         case '--root':
-            let path = value;
+            // let path = value;
             if (value == '') return;
             let root = resolve(value);
             if (!existsSync(root)) {
@@ -160,26 +165,24 @@ const runOptions = getRunOptions(getTestOptions());
 
 if (runOptions.watch) {
     console.log('-------- ' + colorGray('Start Watching for changes...'));
-    const TESTER = run(runOptions);
+}
+const TESTER = run(runOptions);
 
-    TESTER.on('test:fail', (info) => {
-        // console.log(colorRed('-------------------------------------------'))
-        process.stdout.write(`❌ ${colorRed(info.name)} : ${info.details.error.message}` + EOL)
-    })
-    TESTER.on('test:pass', (info) => {
-        // console.log(colorGreen('-------------------------------------------'))
-        process.stdout.write(`✅ ${colorGreen(info.name)} ${colorGray('(' + info.details.duration_ms.toFixed(4) + 'ms)')}` + EOL)
-    })
-    TESTER.on('test:stderr', (err) => {
-        // console.log(colorYellow('-------------------------------------------'))
-        process.stderr.write(err.message)
-    })
-    TESTER.on('test:stdout', (info) => {
-        // console.log(colorBlue('-------------------------------------------'))
+TESTER.on('test:fail', (info) => {
+    process.stdout.write(`❌ ${colorRed(info.name)} : ${info.details.error.message}` + EOL)
+})
+TESTER.on('test:pass', (info) => {
+    process.stdout.write(`✅ ${colorGreen(info.name)} ${colorGray('(' + info.details.duration_ms.toFixed(4) + 'ms)')}` + EOL)
+})
+TESTER.on('test:stderr', (err) => {
+    process.stderr.write(err.message)
+})
+TESTER.on('test:stdout', (info) => {
+    process.stdout.write(info.message)
+})
+if (!runOptions.watch) {
+    TESTER.on('complete', (info) => {
         // console.log(info)
-        process.stdout.write(info.message)
+        // process.stdout.write(`✅ ${colorGreen(info.name)} ${colorGray('(' + info.details.duration_ms.toFixed(4) + 'ms)')}` + EOL)
     })
-} else {
-    console.log('-------- ' + colorGray('Start Running tests...'));
-    run(runOptions)
 }

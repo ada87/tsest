@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync, } from 'fs';
 import { exec } from 'child_process';
 import { resolve } from 'path';
-// node --experimental-strip-types script.ts
+
 
 const __dirname = process.cwd();
 
@@ -48,8 +48,6 @@ const reImport = () => {
     writeFileSync(esmIdxPath, esmIdxContent, 'utf-8');
 }
 
-// tsc --project tsconfig.json --outDir ../oor/node_modules/tsest --watch
-// tsc --project tsconfig.json --outDir ../oor/node_modules/tsest --watch --module ESNext --moduleResolution bundler
 
 const RunBuild = async () => {
     await runCommand('tsc --module commonjs --moduleResolution node');
@@ -75,5 +73,5 @@ const RunClean = () => {
     }
 }
 // node --experimental-strip-types script.ts
-RunBuild()
 // RunClean();
+RunBuild()
