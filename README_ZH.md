@@ -19,20 +19,44 @@
 ### 安装相关库
 
 ```bash
-# 在 typescript 项目中，需要安装  typescript 及 ts-node
+# 快速执行，无类型检查
+npm install --save-dev typescript @types/node tsx tsest
+
+# 开发时类型检查
 npm install --save-dev typescript @types/node ts-node tsest
 ```
+
 ### 编辑 package.json
 
+**快速-无类型检查**
 ```json
 "scripts": {
-    "test": "node -r ts-node/register node_modules/tsest/run",
-    "watch":"node -r ts-node/register node_modules/tsest/run --watch"
+    "test": "tsx node_modules/tsest/run",
+    "watch": "tsx node_modules/tsest/run --watch"
 }
-或是 ESM:
+```
+
+**快速-无类型检查（Node.js 内置）**
+```json
 "scripts": {
-    "test": "node --loader ts-node/esm node_modules/tsest/run",
-    "watch": "node --loader ts-node/esm node_modules/tsest/run --watch"
+    "test": "node --experimental-strip-types node_modules/tsest/run",
+    "watch": "node --experimental-strip-types node_modules/tsest/run --watch"
+}
+```
+
+**较慢-有类型检查**
+```json
+"scripts": {
+    "test": "node -r ts-node/register node_modules/tsest/run",
+    "watch":"node -r ts-node/register node_modules/tsest/run --watch"
+}
+```
+
+**较慢-有类型检查（ESM）**
+```json
+"scripts": {
+    "test": "node --loader ts-node/esm node_modules/tsest/run",
+    "watch": "node --loader ts-node/esm node_modules/tsest/run --watch"
 }
 ```
 
@@ -45,9 +69,25 @@ npm install --save-dev typescript @types/node ts-node tsest
 npm run test
 # Watch mode
 npm run watch
-# 也可通过node命令运行
+
+# 快速执行，无类型检查
+tsx node_modules/tsest/run --watch --root=./src --suffix=.test.ts --test-only
+node --experimental-strip-types node_modules/tsest/run --watch --root=./src --suffix=.test.ts --test-only
+
+# 开发时类型检查
 node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.test.ts --test-only
 ```
+
+### TypeScript 支持
+
+`tsest` 支持多种 TypeScript 运行环境：
+
+| 运行器 | 命令示例 | 类型检查 | 性能 |
+| ------ | -------- | -------- | ---- |
+| tsx | `tsx node_modules/tsest/run` | ❌ | ⚡ 快速 |
+| Node.js 内置 | `node --experimental-strip-types node_modules/tsest/run` | ❌ | ⚡ 快速 |
+| ts-node | `node -r ts-node/register node_modules/tsest/run` | ✅ | 🐌 较慢 |
+
 ### 支持性说明
 
   

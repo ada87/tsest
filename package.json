@@ -1,6 +1,6 @@
 {
   "name": "tsest",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Extremely simple bootstarp of node:test, for TypeScript Project.",
   "author": "Xiang Da",
   "license": "MIT",
@@ -52,5 +52,8 @@
       "types": "./color.d.ts",
       "default": "./color.js"
     }
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.12"
   }
 }

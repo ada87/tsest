@@ -1,4 +1,3 @@
-// https://nodejs.org/docs/latest-v22.x/api/test.html#test-runner-execution-model
 const SIGN = '\u001b[';
 
 const CODES = {

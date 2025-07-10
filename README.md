@@ -18,18 +18,41 @@
 ### Install related libraries
 
 ```bash
-# In a typescript project, you need to install typescript and ts-node
+# For fast execution without type checking
+npm install --save-dev typescript @types/node tsx tsest
+
+# For type checking during development
 npm install --save-dev typescript @types/node ts-node tsest
 ```
 
 ### Edit package.json
 
+**Fast - No Type Checking**
+```json
+"scripts": {
+    "test": "tsx node_modules/tsest/run",
+    "watch": "tsx node_modules/tsest/run --watch"
+}
+```
+
+**Fast - No Type Checking (Node.js built-in)**
+```json
+"scripts": {
+    "test": "node --experimental-strip-types node_modules/tsest/run",
+    "watch": "node --experimental-strip-types node_modules/tsest/run --watch"
+}
+```
+
+**Slower - With Type Checking**
 ```json
 "scripts": {
     "test": "node -r ts-node/register node_modules/tsest/run.cjs",
     "watch":"node -r ts-node/register node_modules/tsest/run.cjs --watch"
 }
-Or ESM:
+```
+
+**Slower - With Type Checking (ESM)**
+```json
 "scripts": {
     "test": "node --loader ts-node/esm node_modules/tsest/run",
     "watch": "node --loader ts-node/esm node_modules/tsest/run --watch"
@@ -46,9 +69,24 @@ Or ESM:
 npm run test
 # Watch mode
 npm run watch
-# You can also run through the node command
+
+# Fast execution without type checking
+tsx node_modules/tsest/run --watch --root=./src --suffix=.test.ts --test-only
+node --experimental-strip-types node_modules/tsest/run --watch --root=./src --suffix=.test.ts --test-only
+
+# Type checking during development
 node -r ts-node/register node_modules/tsest/run --watch --root=./src --suffix=.test.ts --test-only
 ```
+
+### TypeScript Support
+
+`tsest` supports multiple TypeScript runtime environments:
+
+| Runtime | Command Example | Type Checking | Performance |
+| ------- | --------------- | ------------- | ----------- |
+| tsx | `tsx node_modules/tsest/run` | ❌ | ⚡ Fast |
+| Node.js built-in | `node --experimental-strip-types node_modules/tsest/run` | ❌ | ⚡ Fast |
+| ts-node | `node -r ts-node/register node_modules/tsest/run` | ✅ | 🐌 Slower |
 
 ### Support Description
 

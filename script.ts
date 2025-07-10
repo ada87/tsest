@@ -73,5 +73,5 @@ const RunClean = () => {
     }
 }
 // node --experimental-strip-types script.ts
-// RunClean();
+RunClean();
 RunBuild()

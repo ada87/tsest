@@ -17,14 +17,50 @@ export type TestOptions = Pick<RunOptions, 'watch' | 'only' | 'forceExit' | 'tim
 }
 
 const DEFAULT_ARGS = [...process.argv, ...process.execArgv];
-const ExecArg = new Set(DEFAULT_ARGS);
-const IS_ESM = ExecArg.has('--loader');
 
-const IS_TS = IS_ESM || ExecArg.has('ts-node/register') || ExecArg.has('--experimental-strip-types');
+/**
+ * 检测 TypeScript 运行环境
+ * 支持 ts-node, tsx, --experimental-strip-types 等各种场景
+ */
+const detectTypeScriptEnvironment = () => {
+    const { argv, execArgv } = process;
+    
+    // 检查是否直接使用 ts-node 或 tsx 执行
+    const executable = argv[0];
+    if (executable.includes('ts-node') || executable.includes('tsx')) {
+        return { isTS: true, isESM: false };
+    }
+    
+    // 检查 execArgv 中的 TypeScript 相关标志
+    const patterns = [
+        // --experimental-strip-types
+        /^--experimental-strip-types$/,
+        // ts-node 相关
+        /^ts-node\/register$/,
+        /^ts-node\/esm$/,
+        // tsx 相关
+        /^tsx\/esm$/,
+        /^tsx\/cjs$/,
+        /tsx\/dist\/loader\.mjs$/,
+        /tsx\/dist\/preflight\.cjs$/,
+    ];
+    
+    const tsFlags = execArgv.filter(arg => 
+        patterns.some(pattern => pattern.test(arg))
+    );
+    
+    const isTS = tsFlags.length > 0;
+    const isESM = tsFlags.some(flag => 
+        flag.includes('/esm') || flag.includes('/loader.mjs')
+    );
+    
+    return { isTS, isESM };
+};
 
+const { isTS: IS_TS, isESM: IS_ESM } = detectTypeScriptEnvironment();
 
-
-if (ExecArg.has('--strict')) process.env.TSEST_STRICT = 'true'
+// 检查是否有 --strict 标志
+if (DEFAULT_ARGS.includes('--strict')) process.env.TSEST_STRICT = 'true'
 
 const toPattern = (value: string): TestOptions['testNamePatterns'] => {
     let txt = value;
