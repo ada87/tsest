@@ -2,67 +2,52 @@
 
 [English](README.md)  | ![npm version](https://img.shields.io/npm/v/tsest.svg?style=flat)
 
-## 介绍
-  
 **tsest** 是一个基于 `node:test` 的单元测试启动器，支持 `typescript`。
-
-  
-1. TypeScript 
-2. 原生 [node:test](https://nodejs.org/api/test.html)📍。
-3. 无依赖，无插件，零配置，无代码污染。
-4. 优化错误提示 🚀, 支持参数使用严格模式！
-5. 全套测试/断言 便捷 API（ 批量 x 异步 x 快捷方式 ）
-
 
 ## 安装
 
-### 安装相关库
+1. 安装 `tsest`, npm/pnpm/yarn/cnpm 均可
 
 ```bash
-# 快速执行，无类型检查
-npm install --save-dev typescript @types/node tsx tsest
+npm install --save-dev tsest @types/node
+```
+  
+2. 可选
 
-# 开发时类型检查
-npm install --save-dev typescript @types/node ts-node tsest
+```bash
+# 支持
+npm install -g tsx              # (global tsx)
+npm install --save-dev tsx      # (spec tsx)
+npm install -g ts-node          # (global ts-node)
+npm install --save-dev ts-node  # (spec ts-node)
+# or do-nothing                 # (也可以什么都不装，使用 node --experimental-strip-types 目前依然不稳定)
 ```
 
-### 编辑 package.json
+## 运行
 
-**快速-无类型检查**
+简单的 tsx/esm 配置
 ```json
-"scripts": {
-    "test": "tsx node_modules/tsest/run",
-    "watch": "tsx node_modules/tsest/run --watch"
+{
+    "scripts" : {
+        "test": "tsx ./node_modules/tsest/run",
+        "watch": "tsx ./node_modules/tsest/run --watch",
+    }
 }
 ```
 
-**快速-无类型检查（Node.js 内置）**
+简单的 tsx/cjs 配置
 ```json
-"scripts": {
-    "test": "node --experimental-strip-types node_modules/tsest/run",
-    "watch": "node --experimental-strip-types node_modules/tsest/run --watch"
+{
+    "scripts" : {
+        "test": "tsx ./node_modules/tsest/run-cjs",
+        "watch": "tsx ./node_modules/tsest/run-cjs --watch",
+    }
 }
 ```
 
-**较慢-有类型检查**
-```json
-"scripts": {
-    "test": "node -r ts-node/register node_modules/tsest/run",
-    "watch":"node -r ts-node/register node_modules/tsest/run --watch"
-}
-```
-
-**较慢-有类型检查（ESM）**
-```json
-"scripts": {
-    "test": "node --loader ts-node/esm node_modules/tsest/run",
-    "watch": "node --loader ts-node/esm node_modules/tsest/run --watch"
-}
-```
 
 [更多配置参考](./SETUP.md)
 
-## 运行
 
 ```bash
 # 运行测试用例

@@ -2,32 +2,31 @@
 
 [中文](README_ZH.md)  | ![npm version](https://img.shields.io/npm/v/tsest.svg?style=flat)
 
-
-## Introduction
-
 **tsest** is a unit test runner script based on `node:test`, for `TypeScript`.
-
-1. Based on native `node:test`📍, using standard [Test API](https://nodejs.org/api/test.html) and [Assert API](https://nodejs.org/api/assert.html).
-2. TypeScript
-3. Supports most parameters of the native `node --test` runner, with additional filtering parameters
-4. Optimized error messages 🚀
-5. Provides a full set of convenient APIs
 
 ## Installation
 
-### Install related libraries
+1. Install `tsest`, npm/pnpm/yarn/cnpm all work
 
 ```bash
-# For fast execution without type checking
-npm install --save-dev typescript @types/node tsx tsest
+npm install --save-dev tsest @types/node
+```
+  
+2. Optional
 
-# For type checking during development
-npm install --save-dev typescript @types/node ts-node tsest
+```bash
+# Support
+npm install -g tsx              # (global tsx)
+npm install --save-dev tsx      # (spec tsx)
+npm install -g ts-node          # (global ts-node)
+npm install --save-dev ts-node  # (spec ts-node)
+# or do-nothing                 # (can also install nothing, use node --experimental-strip-types which is still unstable)
 ```
 
-### Edit package.json
+3. Edit package.json
 
-**Fast - No Type Checking**
+1. for tsx/esm
+
 ```json
 "scripts": {
     "test": "tsx node_modules/tsest/run",
@@ -35,27 +34,12 @@ npm install --save-dev typescript @types/node ts-node tsest
 }
 ```
 
-**Fast - No Type Checking (Node.js built-in)**
-```json
-"scripts": {
-    "test": "node --experimental-strip-types node_modules/tsest/run",
-    "watch": "node --experimental-strip-types node_modules/tsest/run --watch"
-}
-```
+2. for tsx/cjs
 
-**Slower - With Type Checking**
 ```json
 "scripts": {
-    "test": "node -r ts-node/register node_modules/tsest/run.cjs",
-    "watch":"node -r ts-node/register node_modules/tsest/run.cjs --watch"
-}
-```
-
-**Slower - With Type Checking (ESM)**
-```json
-"scripts": {
-    "test": "node --loader ts-node/esm node_modules/tsest/run",
-    "watch": "node --loader ts-node/esm node_modules/tsest/run --watch"
+    "test": "tsx node_modules/tsest/run-cjs",
+    "watch": "tsx node_modules/tsest/run-cjs --watch"
 }
 ```
 

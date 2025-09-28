@@ -1,6 +1,6 @@
 {
   "name": "tsest",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Extremely simple bootstarp of node:test, for TypeScript Project.",
   "author": "Xiang Da",
   "license": "MIT",
@@ -8,6 +8,10 @@
     "type": "git",
     "url": "https://github.com/ada87/tsest"
   },
+  "type": "module",
+  "main": "./index.cjs",
+  "module": "./index.js",
+  "types": "./index.d.ts" ,
   "keywords": [
     "node",
     "test",
@@ -15,44 +19,6 @@
     "typescript",
     "runner"
   ],
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./index.d.ts",
-        "default": "./index.js"
-      },
-      "require": {
-        "types": "./index.d.cts",
-        "default": "./index.cjs"
-      },
-      "types": "./index.d.ts",
-      "default": "./index.js"
-    },
-    "./run": {
-      "import": {
-        "types": "./run.d.ts",
-        "default": "./run.js"
-      },
-      "require": {
-        "types": "./run.d.cts",
-        "default": "./run.cjs"
-      },
-      "types": "./run.d.ts",
-      "default": "./run.js"
-    },
-    "./color": {
-      "import": {
-        "types": "./color.d.ts",
-        "default": "./color.js"
-      },
-      "require": {
-        "types": "./color.d.cts",
-        "default": "./color.cjs"
-      },
-      "types": "./color.d.ts",
-      "default": "./color.js"
-    }
-  },
   "devDependencies": {
     "@types/node": "^24.0.12"
   }

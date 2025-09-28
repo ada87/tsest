@@ -4,6 +4,7 @@ pnpm-lock.yaml
 .gitignore
 .vscode
 SETUP.md
+README_ZH.md
 *.ts
 *.test.ts
 !*.d.ts
